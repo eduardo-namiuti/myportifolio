@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=TASA+Explorer:wght@400..800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eduardo Namiuti</title>
+
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            background: linear-gradient(to bottom, #E6F3FF, #A3C1DA);
+            font-family: Tahoma, Geneva, Verdana, sans-serif;
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        /* Carregamento */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgb(0, 0, 0);
+            color: orange;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 2rem;
+            transition: opacity 1s ease;
+            z-index: 9999;
+        }
+
+        #content {
+            opacity: 0;
+            flex: 1;
+            transition: opacity 1s ease;
+            font-family: Arial, sans-serif;
+            max-height: calc(80vh - 40px);
+        }
+
+        .fade-in {
+            opacity: 1;
+            display: block;
+        }
+
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            font-size: 1.5rem;
+            width: 100%;
+            background: linear-gradient(to right, #FFFFFF, #728ba5);
+            font-weight: bold;
+            color: rgb(0, 0, 0);
+            text-align: left;
+            padding: 1.5rem;
+        }
+
+        .fade-out {
+            opacity: 0;
+        }
+
+        p {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        .menu-item {
+            padding: 8px 12px;
+            font-size: 10rem;
+            border-bottom: 1px solid #DDD;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background-color: #E6F2FF;
+            color: #005A9E;
+        }
+
+        .window {
+            position: absolute;
+            min-width: 280px;
+            max-width: 90vw;
+            min-height: 150px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            /* título + conteúdo */
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            border: 2px outset #005A9E;
+            background: linear-gradient(to bottom, #FFFFFF, #F0F0F0);
+            border-radius: 0.5rem 0.5rem 0 0;
+            user-select: none;
+            transform-origin: top left;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .window.opened {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .icon {
+            width: 200px;
+            height: 100%;
+            left: 0;
+        }
+
+        .title-bar {
+            background: linear-gradient(to bottom, #005A9E, #00264D);
+            color: white;
+            cursor: move;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 1rem;
+            position: relative;
+            /* necessário para o close-btn */
+            flex-shrink: 0;
+            /* não encolhe */
+        }
+
+        .title-bar:hover {
+            background: linear-gradient(to bottom, #0066CC, #003366);
+        }
+
+        .menu-list li {
+            background: linear-gradient(to bottom, #e0e0e0, #a0a0a0);
+            border: 1px solid #808080;
+            padding: 4px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 2px;
+            box-shadow: 1px 1px 0 #fff inset;
+            margin-bottom: 6px;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            user-select: none;
+            background: red;
+            text-align: center;
+            width: 24px;
+            box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #000 inset;
+            height: 24px;
+        }
+
+        .close-btn:hover {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            user-select: none;
+            background: rgb(87, 0, 0);
+            text-align: center;
+            width: 24px;
+            box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #000 inset;
+            height: 24px;
+        }
+
+        .imageico {
+            width: 12rem;
+            height: auto;
+            display: block;
+
+        }
+
+        .content {
+            overflow-y: auto;
+            /* scroll vertical */
+            overflow-x: hidden;
+            flex: 1;
+            /* ocupa todo espaço restante */
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen p-4">
+    <!-- Carregador -->
+    <div id="loader">Carregando<span id="dots"></span></div>
+
+    <!-- Conteúdo da página -->
+    <div id="content">
+        <div id="window" class="window rounded-t-lg max-w-[90vw] min-w-[280px]">
+            <div class="title-bar flex items-center justify-between p-2">
+                <div class="flex items-center space-x-6">
+                    <span class="font-bold text-sm">Seja bem-vindo(a)!</span>
+                </div>
+            </div>
+            <div class="content p-4 bg-white">
+                <div class="flex items-center space-x-6">
+                    <span><img src="img/ico.png" style="width: 30px; margin-right: 16px;" class="icon"></span>
+                    <span>
+                        <p>Olá, meu nome é <b>Eduardo Namiuti!</b></p>
+                        <p>Seja bem-vindo(a) ao meu portfolio profissional. Para navegar, clique nos botões abaixo.</p>
+                    </span>
+                </div>
+                <ul class="menu-list">
+                    <li class="menu-item" onclick="openWindowByType('sobre')">Sobre mim</li>
+                    <li class="menu-item" onclick="openWindowByType('ajuda')">Ajuda</li>
+                    <li class="menu-item" onclick="openWindowByType('contatos')">Contatos</li>
+                </ul>
+            </div>
+        </div>
+        <footer>Eduardo Namiuti - 2025</footer>
+    </div>
+
+    <div id="windows-container"></div>
+
+    <script>
+        const windowsContainer = document.getElementById('windows-container');
+        let zIndexCounter = 20;
+
+        // Gera posição aleatória considerando o footer
+        function getRandomPosition(winWidth = 400, winHeight = 300) {
+            const footer = document.querySelector("footer");
+            const footerHeight = footer ? footer.offsetHeight : 0;
+
+            const maxX = Math.max(0, window.innerWidth - winWidth);
+            const maxY = Math.max(0, window.innerHeight - winHeight - footerHeight);
+
+            return {
+                x: Math.floor(Math.random() * maxX),
+                y: Math.floor(Math.random() * maxY)
+            };
+        }
+
+        // Tornar janela arrastável
+        function makeDraggable(win, handle) {
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            handle.addEventListener('mousedown', e => {
+                isDragging = true;
+                offsetX = e.clientX - win.offsetLeft;
+                offsetY = e.clientY - win.offsetTop;
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', e => {
+                if (isDragging) {
+                    const footer = document.querySelector("footer");
+                    const footerHeight = footer ? footer.offsetHeight : 0;
+
+                    let newX = e.clientX - offsetX;
+                    let newY = e.clientY - offsetY;
+
+                    newX = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, newX));
+                    newY = Math.max(0, Math.min(window.innerHeight - win.offsetHeight - footerHeight, newY));
+
+                    win.style.left = newX + 'px';
+                    win.style.top = newY + 'px';
+                    win.style.position = 'absolute';
+                }
+            });
+
+            document.addEventListener('mouseup', () => isDragging = false);
+        }
+
+        // Loader
+        const dots = document.getElementById("dots");
+        let count = 0;
+        const interval = setInterval(() => {
+            count = (count + 1) % 4;
+            dots.textContent = ".".repeat(count);
+        }, 500);
+
+        window.addEventListener("load", () => {
+            // janela principal
+            const mainWindow = document.getElementById('window');
+            const mainTitleBar = mainWindow.querySelector('.title-bar');
+            makeDraggable(mainWindow, mainTitleBar);
+
+            const pos = getRandomPosition(mainWindow.offsetWidth || 400, mainWindow.offsetHeight || 300);
+            mainWindow.style.left = pos.x + 'px';
+            mainWindow.style.top = pos.y + 'px';
+            mainWindow.style.position = 'absolute';
+
+            setTimeout(() => {
+                clearInterval(interval);
+                const loader = document.getElementById("loader");
+                const content = document.getElementById("content");
+
+                loader.classList.add("fade-out");
+
+                loader.addEventListener("transitionend", function onTransitionEnd(e) {
+                    if (e.propertyName === "opacity") {
+                        content.style.opacity = 1;
+                        loader.style.display = "none";
+                        content.classList.add("fade-in");
+                        openWindowByType('inicio');
+                        loader.removeEventListener("transitionend", onTransitionEnd);
+                    }
+                });
+            }, 3000);
+        });
+
+        // Criar janelas secundárias
+        function createWindow(title, contentHtml, type) {
+            if (windowsContainer.querySelector(`.window[data-type="${type}"]`)) {
+                const existing = windowsContainer.querySelector(`.window[data-type="${type}"]`);
+                existing.style.zIndex = zIndexCounter++;
+                return;
+            }
+
+            const win = document.createElement('div');
+            win.classList.add('window');
+            win.setAttribute('data-type', type);
+
+            const pos = getRandomPosition(win.offsetWidth || 400, win.offsetHeight || 300);
+            win.style.left = pos.x + 'px';
+            win.style.top = pos.y + 'px';
+            win.style.zIndex = zIndexCounter++;
+
+            // Barra de título
+            const titleBar = document.createElement('div');
+            titleBar.className = 'title-bar';
+            titleBar.innerHTML = `<span>${title}</span><span class="close-btn" title="Fechar">×</span>`;
+            win.appendChild(titleBar);
+
+            // Conteúdo
+            const content = document.createElement('div');
+            content.className = 'content';
+            content.innerHTML = contentHtml;
+            win.appendChild(content);
+
+            windowsContainer.appendChild(win);
+            win.offsetWidth; // reflow
+            win.classList.add('opened');
+
+            // fechar
+            titleBar.querySelector('.close-btn').addEventListener('click', () => {
+                windowsContainer.removeChild(win);
+            });
+
+            // arrastar
+            makeDraggable(win, titleBar);
+
+            // trazer para frente
+            win.addEventListener('mousedown', () => win.style.zIndex = zIndexCounter++);
+        }
+
+        // Abrir janelas por tipo
+        function openWindowByType(type) {
+            switch (type) {
+                case 'inicio':
+                    createWindow('Bem-vindo(a)!',
+                        `<div class="content p-4 bg-white">
+                            <div class="flex items-center space-x-6">
+                                <span><img src="img/ico.png" alt="Ícone" style="width: 30px; margin-right: 16px;" class="icon"></span>
+                                <span>
+                                    <p>Olá, meu nome é <b>Eduardo Namiuti!</b></p>
+                                    <p>Seja bem-vindo(a) ao meu portfolio profissional. Para navegar, clique nos botões abaixo.</p>
+                                </span>
+                            </div>
+                            <ul class="menu-list" style="margin-top: 1rem;">
+                                <li class="menu-item" onclick="openWindowByType('sobre')">Sobre mim</li>
+                                <li class="menu-item" onclick="openWindowByType('ajuda')">Ajuda</li>
+                                <li class="menu-item" onclick="openWindowByType('contatos')">Contatos</li>
+                            </ul>
+                        </div>`, 'inicio');
+                    break;
+                case 'sobre':
+                    createWindow(
+                        'Sobre mim',
+                        `
+                        <h1 class="text-3xl font-bold text-gray-900 p-6">Sobre mim</h1>
+                        <div class="flex items-center space-x-4 p-6" style="overflow: auto;">
+                        <img src="img/Q-Mark.png" alt="Ícone" style="width: 30px; height: 30px;">
+                        <p class="about-text">
+                         Olá, me chamo Eduardo Fonseca Silveira Namiuti.<br>
+                        Sou programador, editor de vídeo e aluno de Ciência da Computação.
+                    
+                        </p>
+                        <img src="img/aboutico.jpeg" class="imageico">
+                     </div>
+                        <br>
+                        <div class="flex items-center space-x-4 p-4">
+                        <p> Desde pequeno, sempre fui fascinado por tecnologia. Atualmente viso trabalhar
+                            <br> na área pela paixão pela programação e tecnologia em geral. Porém, viso também trabalhar na área de design e edição de vídeo também <br> seja como passatempo ou seja profissionalmente. Meu intuito é e sempre será aprender.
+                        </div>
+                        `
+                        , 'sobre');
+                    break;
+                case 'ajuda':
+                    createWindow('Ajuda', '<p>Exemplo de ajuda...</p>', 'ajuda');
+                    break;
+                case 'contatos':
+                    createWindow('Contatos', '<p>Exemplo de contatos...</p>', 'contatos');
+                    break;
+                default:
+                    console.warn('Tipo desconhecido:', type);
+            }
+        }
+    </script>
+</body>
+
+
+</html>
