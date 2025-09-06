@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=TASA+Explorer:wght@400..800&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eduardo Namiuti</title>
@@ -20,6 +21,8 @@
             margin: 0;
             display: flex;
             flex-direction: column;
+            scrollbar-width: thin;
+            scrollbar-color: #0066CC #003366;
         }
 
         ul {
@@ -69,9 +72,10 @@
             bottom: 0;
             font-size: 1.5rem;
             width: 100%;
-            background: linear-gradient(to right, #FFFFFF, #728ba5);
+            background: linear-gradient(to bottom, #0066CC, #003366);
+            border-top: 2px solid #00254b;
             font-weight: bold;
-            color: rgb(0, 0, 0);
+            color: rgb(255, 255, 255);
             text-align: left;
             padding: 1.5rem;
         }
@@ -85,7 +89,6 @@
         }
 
         .menu-item {
-            padding: 8px 12px;
             font-size: 10rem;
             border-bottom: 1px solid #DDD;
             cursor: pointer;
@@ -99,7 +102,7 @@
         .window {
             position: absolute;
             min-width: 280px;
-            max-width: 90vw;
+            max-width: 50vw;
             min-height: 150px;
             max-height: 70vh;
             display: flex;
@@ -148,8 +151,8 @@
         .menu-list li {
             background: linear-gradient(to bottom, #e0e0e0, #a0a0a0);
             border: 1px solid #808080;
-            padding: 4px 12px;
-            font-size: 13px;
+            padding: 4px 16px;
+            font-size: 1rem;
             cursor: pointer;
             border-radius: 2px;
             box-shadow: 1px 1px 0 #fff inset;
@@ -206,25 +209,19 @@
         <div id="window" class="window rounded-t-lg max-w-[90vw] min-w-[280px]">
             <div class="title-bar flex items-center justify-between p-2">
                 <div class="flex items-center space-x-6">
-                    <span class="font-bold text-sm">Seja bem-vindo(a)!</span>
                 </div>
             </div>
             <div class="content p-4 bg-white">
                 <div class="flex items-center space-x-6">
-                    <span><img src="img/ico.png" style="width: 30px; margin-right: 16px;" class="icon"></span>
-                    <span>
-                        <p>Olá, meu nome é <b>Eduardo Namiuti!</b></p>
-                        <p>Seja bem-vindo(a) ao meu portfolio profissional. Para navegar, clique nos botões abaixo.</p>
-                    </span>
                 </div>
                 <ul class="menu-list">
-                    <li class="menu-item" onclick="openWindowByType('sobre')">Sobre mim</li>
-                    <li class="menu-item" onclick="openWindowByType('ajuda')">Ajuda</li>
-                    <li class="menu-item" onclick="openWindowByType('contatos')">Contatos</li>
                 </ul>
             </div>
         </div>
-        <footer>Eduardo Namiuti - 2025</footer>
+        <footer class="flex justify-between">
+            <img class="footer-logo" style="width: 40px;" src="img/logoportfolio.svg">
+            Eduardo Namiuti - 2025
+        </footer>
     </div>
 
     <div id="windows-container"></div>
@@ -261,14 +258,12 @@
 
             document.addEventListener('mousemove', e => {
                 if (isDragging) {
-                    const footer = document.querySelector("footer");
-                    const footerHeight = footer ? footer.offsetHeight : 0;
 
                     let newX = e.clientX - offsetX;
                     let newY = e.clientY - offsetY;
 
                     newX = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, newX));
-                    newY = Math.max(0, Math.min(window.innerHeight - win.offsetHeight - footerHeight, newY));
+                    newY = Math.max(0, Math.min(window.innerHeight - win.offsetHeight, newY));
 
                     win.style.left = newX + 'px';
                     win.style.top = newY + 'px';
@@ -298,6 +293,8 @@
             mainWindow.style.top = pos.y + 'px';
             mainWindow.style.position = 'absolute';
 
+
+
             setTimeout(() => {
                 clearInterval(interval);
                 const loader = document.getElementById("loader");
@@ -325,11 +322,12 @@
                 return;
             }
 
+
             const win = document.createElement('div');
             win.classList.add('window');
             win.setAttribute('data-type', type);
 
-            const pos = getRandomPosition(win.offsetWidth || 400, win.offsetHeight || 300);
+            const pos = getRandomPosition(win.offsetWidth || 600, win.offsetHeight || 300);
             win.style.left = pos.x + 'px';
             win.style.top = pos.y + 'px';
             win.style.zIndex = zIndexCounter++;
@@ -377,7 +375,7 @@
                             </div>
                             <ul class="menu-list" style="margin-top: 1rem;">
                                 <li class="menu-item" onclick="openWindowByType('sobre')">Sobre mim</li>
-                                <li class="menu-item" onclick="openWindowByType('ajuda')">Ajuda</li>
+                                <li class="menu-item" onclick="openWindowByType('projetos')">Projetos</li>
                                 <li class="menu-item" onclick="openWindowByType('contatos')">Contatos</li>
                             </ul>
                         </div>`, 'inicio');
@@ -390,22 +388,45 @@
                         <div class="flex items-center space-x-4 p-6" style="overflow: auto;">
                         <img src="img/Q-Mark.png" alt="Ícone" style="width: 30px; height: 30px;">
                         <p class="about-text">
-                         Olá, me chamo Eduardo Fonseca Silveira Namiuti.<br>
-                        Sou programador, editor de vídeo e aluno de Ciência da Computação.
-                    
+                         Me chamo Eduardo Fonseca Silveira Namiuti.<br>
+                        Sou técnico em informática, editor de vídeo e aluno de Ciência da Computação.
                         </p>
-                        <img src="img/aboutico.jpeg" class="imageico">
+                        <div>
+                            <img src="img/aboutico.jpeg" class="imageico">
+                        </div>
                      </div>
                         <br>
                         <div class="flex items-center space-x-4 p-4">
-                        <p> Desde pequeno, sempre fui fascinado por tecnologia. Atualmente viso trabalhar
-                            <br> na área pela paixão pela programação e tecnologia em geral. Porém, viso também trabalhar na área de design e edição de vídeo também <br> seja como passatempo ou seja profissionalmente. Meu intuito é e sempre será aprender.
+                        <p> Desde a infância, desenvolvi uma grande fascinação por tecnologia. Atualmente, tenho como objetivo atuar na área de programação e tecnologia, movido pela paixão que sempre tive pelo tema. Além disso, também tenho interesse em design e edição de vídeo, seja como atividade profissional ou como forma de expressão criativa. Meu propósito é, e sempre será, aprender continuamente e aprimorar minhas habilidades. </p>
                         </div>
+                        <h1 class="text-3xl font-bold text-gray-900 p-6">Formação Acadêmica</h1>
+                        <div class="p-6 space-y-4">
+                          <div class="border-l-4 border-blue-600 pl-4">
+                             <h2 class="text-xl font-semibold text-gray-800">Bacharelado em Ciência da Computação</h2>
+                             <p class="text-gray-600">Universidade Paulista (UNIP) – Em andamento</p>
+                         </div>
+                        <div class="border-l-4 border-green-600 pl-4">
+                             <h2 class="text-xl font-semibold text-gray-800">Técnico em Informática</h2>
+                             <p class="text-gray-600">Instituto IDEIA – Concluído</p>
+                        </div>
+                        <div class="border-l-4 border-red-600 pl-4">
+                             <h2 class="text-xl font-semibold text-gray-800">Tecnologo em Desenvolvimento de Software Multiplataforma</h2>
+                             <p class="text-gray-600">FATEC – Incompleto</p>
+                        </div>
+                    </div>
+
+                        
                         `
+
                         , 'sobre');
                     break;
-                case 'ajuda':
-                    createWindow('Ajuda', '<p>Exemplo de ajuda...</p>', 'ajuda');
+                case 'projetos':
+                    createWindow('Projetos', `
+                    <h1 class="text-3xl font-bold text-gray-900 p-6">Projetos</h1>
+                    <div class="flex items-center space-x-4 p-6" style="overflow: auto;">
+                        Aqui eu aponto alguns projetos cujo participei e criei.
+                    </div>
+                    `, 'projetos');
                     break;
                 case 'contatos':
                     createWindow('Contatos', '<p>Exemplo de contatos...</p>', 'contatos');
