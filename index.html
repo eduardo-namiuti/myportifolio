@@ -175,11 +175,11 @@
                     #ff3355 0%,
                     #f05757 100%);
 
-        text-align: center;
-        border-radius: 2px;
-        width: 24px;
-        border: 1px solid #fff;
-        height: 24px;
+            text-align: center;
+            border-radius: 2px;
+            width: 24px;
+            border: 1px solid #fff;
+            height: 24px;
         }
 
         .close-btn:hover {
@@ -218,6 +218,51 @@
             align-items: center;
             height: 100vh;
         }
+
+        #modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modal img {
+            max-width: 80%;
+            max-height: 80%;
+        }
+
+        .galeria {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .galeria img {
+            width: 50%;
+            height: 20vh;
+            object-fit: cover;
+        }
+
+        .imageprint:hover {
+            color: #424242;
+            -webkit-transition: all .3s ease-in;
+            -moz-transition: all .3s ease-in;
+            -ms-transition: all .3s ease-in;
+            -o-transition: all .3s ease-in;
+            transition: all .3s ease-in;
+            opacity: 1;
+            transform: scale(1.15);
+            -ms-transform: scale(1.15);
+            -webkit-transform: scale(1.15);
+        }
     </style>
 </head>
 
@@ -230,6 +275,9 @@
     </div>
 
     <!-- Conteúdo da página -->
+    <div id="modal">
+        <img src="" alt="foto">
+    </div>
     <div id="content">
         <div id="window" class="window rounded-t-lg max-w-[90vw] min-w-[280px]">
             <div class="title-bar flex items-center justify-between p-2">
@@ -361,7 +409,7 @@
             // Barra de título
             const titleBar = document.createElement('div');
             titleBar.className = 'title-bar';
-            titleBar.innerHTML = `<span>${title}</span><span class="close-btn" title="Fechar"><b>X</b></span>`;
+            titleBar.innerHTML = `<span>${title}</span><span class="close-btn" title="Fechar">x</span>`;
             win.appendChild(titleBar);
 
             // Conteúdo
@@ -458,9 +506,14 @@
                         </div>                            
                         <h1 class="text-3xl font-bold text-gray-900 p-6">Projetos Acadêmicos</h1>
                         <div class="items-center space-x-4 p-6" style="overflow: auto;">
-                            <a href="https://github.com/Daiene/Pixels" target="_blank"><h2 title="Acesse o Git!" class="text-2xl font-bold text-green">Projeto Grupo de Mães</h2></a>
-                            Projeto da primeira API do curso de Desenvolvimento de Software Multiplataforma. Ajudamos mães com um sistema, cujo os filhos(as) tem doenças renais crônicas.
+                            <a href="https://github.com/Daiene/Pixels" target="_blank"><h2 title="Acesse o Git!" class="text-2xl font-bold text-blue-600 underline">Projeto Grupo de Mães</h2></a>
+                            Projeto da primeira API do curso de Desenvolvimento de Software Multiplataforma. 
+                            Ajudamos mães com um sistema, cujo os filhos(as) tem doenças renais crônicas.
                             <br>
+                        </div>
+                        <div class= "space-x-4 p-6">
+                            <a href="https://github.com/Mercurine22/correction-repo" target='_blank'><h2 title="Acesse o Git!" class="text-2xl font-bold text-blue-600 underline">Correction</h2></a>    
+                            Projeto para o TCC do meu Ensino Técnico. Trata-se de um aplcativo para corrigir redação, sem fins lucrativos, de professores para alunos.
                         </div>
                 `, 'projetos');
                     break;
