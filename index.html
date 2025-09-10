@@ -169,8 +169,11 @@
         .close-btn {
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1rem;
             user-select: none;
+            align-items: center;
+            display: flex;
+            justify-content: center;
             background: radial-gradient(farthest-corner at 40px 40px,
                     #ff3355 0%,
                     #f05757 100%);
@@ -409,7 +412,7 @@
             // Barra de título
             const titleBar = document.createElement('div');
             titleBar.className = 'title-bar';
-            titleBar.innerHTML = `<span>${title}</span><span class="close-btn" title="Fechar">x</span>`;
+            titleBar.innerHTML = `<span>${title}</span><span class="close-btn" title="Fechar">X</span>`;
             win.appendChild(titleBar);
 
             // Conteúdo
@@ -488,8 +491,6 @@
                              <p class="text-gray-600">FATEC – Incompleto</p>
                         </div>
                     </div>
-
-                        
                         `
 
                         , 'sobre');
@@ -509,12 +510,23 @@
                             <a href="https://github.com/Daiene/Pixels" target="_blank"><h2 title="Acesse o Git!" class="text-2xl font-bold text-blue-600 underline">Projeto Grupo de Mães</h2></a>
                             Projeto da primeira API do curso de Desenvolvimento de Software Multiplataforma. 
                             Ajudamos mães com um sistema, cujo os filhos(as) tem doenças renais crônicas.
-                            <br>
                         </div>
                         <div class= "space-x-4 p-6">
                             <a href="https://github.com/Mercurine22/correction-repo" target='_blank'><h2 title="Acesse o Git!" class="text-2xl font-bold text-blue-600 underline">Correction</h2></a>    
                             Projeto para o TCC do meu Ensino Técnico. Trata-se de um aplcativo para corrigir redação, sem fins lucrativos, de professores para alunos.
                         </div>
+                        
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-900 p-6">Projetos Pessoais</h1>
+                            <div class="text-lg p-6 space-y-4">
+                                <div>
+                                    <a href="https://myportifolio-beryl.vercel.app/" target="_blank"><h2 title="Clique para acessar!" class="text-2xl font-bold text-blue-600 underline">Portfolio Pessoal</h2></a>
+                                    Meu portfolio pessoal, onde você pode conhecer mais sobre mim e meus projetos.
+                               </div>
+                               <div>
+                                    <a href="https://www.youtube.com/@thecriticsoficial" target="_blank"><h2 title="Clique para acessar!" class="text-2xl font-bold text-blue-600 underline">TheCritics</h2></a>
+                                    Canal no YouTube de analises de jogos e mistérios da internet.
+                               </div>
                 `, 'projetos');
                     break;
                 case 'contatos':
